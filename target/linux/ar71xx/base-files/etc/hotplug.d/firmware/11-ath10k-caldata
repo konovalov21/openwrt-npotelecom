@@ -184,7 +184,8 @@ case "$FIRMWARE" in
 			/lib/firmware/ath10k/QCA9888/hw2.0/board.bin
 		ath10kcal_patch_mac $(macaddr_add $(cat /sys/class/net/eth1/address) -1)
 		;;
-	cf-e385ac)
+	cf-e385ac|\
+	ap5000ac)
 		ath10kcal_extract "art" 20480 12064
 		;;
 	esac

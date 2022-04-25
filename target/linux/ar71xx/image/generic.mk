@@ -105,6 +105,16 @@ define Device/ap121f
 endef
 TARGET_DEVICES += ap121f
 
+define Device/ap5000ac
+  DEVICE_TITLE := NPOTELECOM AP5000AC
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-ath10k-ct ath10k-firmware-qca9984-ct \
+	-uboot-envtools
+  BOARDNAME := AP5000AC
+  IMAGE_SIZE := 16000k
+  MTDPARTS := spi0.0:256k(u-boot)ro,64k(art)ro,16000k(firmware),64k(art-backup)ro
+endef
+TARGET_DEVICES += ap5000ac
+
 define Device/ap531b0
   DEVICE_TITLE := Rockeetech AP531B0
   DEVICE_PACKAGES := kmod-usb-core kmod-usb2

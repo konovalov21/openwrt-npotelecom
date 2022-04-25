@@ -207,6 +207,7 @@ platform_check_image() {
 	airrouter|\
 	ap121f|\
 	ap132|\
+	ap5000ac|\
 	ap531b0|\
 	ap90q|\
 	archer-c25-v1|\

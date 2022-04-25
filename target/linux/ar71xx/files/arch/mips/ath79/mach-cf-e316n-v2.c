@@ -8,6 +8,8 @@
  *  - CF-E380AC v1/v2 (QCA9558)
  *  - CF-E385AC (QCA9558 + QCA9984 + QCA8337)
  *  - CF-E520N/CF-E530N (QCA9531)
+ * NPO Telecom boards:
+ *  - AP5000AC (QCA9558 + QCA9984 + QCA8337)
  *
  *  Copyright (C) 2016 Piotr Dymacz <pepe2k@gmail.com>
  *  Copyright (C) 2016 Gareth Parker <gareth41@orcon.net.nz>
@@ -346,6 +348,47 @@ static struct gpio_led cf_e530n_leds_gpio[] __initdata = {
 		.gpio		= CF_E5X0N_GPIO_LED_WAN,
 		.active_low	= 1,
 	}
+};
+
+/* AP5000AC */
+#define AP5000AC_GPIO_LED_STATUS	13
+#define AP5000AC_GPIO_LED_STATUS1	14
+#define AP5000AC_GPIO_LED_WLAN2G	15
+#define AP5000AC_GPIO_LED_WLAN5G	16
+
+#define AP5000AC_GPIO_EXT_WDT		17
+
+#define AP5000AC_GPIO_BTN_RESET		21
+
+static struct gpio_led ap5000ac_leds_gpio[] __initdata = {
+	{
+		.name		= "ap5000ac:red:status",
+		.gpio		= AP5000AC_GPIO_LED_STATUS,
+		.active_low	= 0,
+	}, {
+		.name		= "ap5000ac:red:status1",
+		.gpio		= AP5000AC_GPIO_LED_STATUS1,
+		.active_low	= 0,
+	}, {
+		.name		= "ap5000ac:green:wlan2g",
+		.gpio		= AP5000AC_GPIO_LED_WLAN2G,
+		.active_low	= 0,
+	}, {
+		.name		= "ap5000ac:yellow:wlan5g",
+		.gpio		= AP5000AC_GPIO_LED_WLAN5G,
+		.active_low	= 0,
+	},
+};
+
+static struct gpio_keys_button ap5000ac_gpio_keys[] __initdata = {
+	{
+		.desc		= "Reset button",
+		.type		= EV_KEY,
+		.code		= KEY_RESTART,
+		.debounce_interval = CF_EXXXN_KEYS_DEBOUNCE_INTERVAL,
+		.gpio		= AP5000AC_GPIO_BTN_RESET,
+		.active_low	= 1,
+	},
 };
 
 /*
@@ -722,6 +765,76 @@ static void __init cf_e385ac_setup(void)
 
 MIPS_MACHINE(ATH79_MACH_CF_E385AC, "CF-E385AC", "COMFAST CF-E385AC",
 	     cf_e385ac_setup);
+
+static void __init ap5000ac_common_setup(unsigned long art_ofs)
+{
+	cf_exxxn_common_setup(art_ofs, CF_E38XAC_GPIO_EXT_WDT);
+
+	ath79_register_pci();
+
+	/* Disable JTAG (enables GPIO0-3) */
+	ath79_gpio_function_enable(AR934X_GPIO_FUNC_JTAG_DISABLE);
+
+	ath79_gpio_direction_select(AP5000AC_GPIO_LED_STATUS, true);
+	ath79_gpio_direction_select(AP5000AC_GPIO_LED_STATUS1, true);
+	ath79_gpio_direction_select(AP5000AC_GPIO_LED_WLAN2G, true);
+	ath79_gpio_direction_select(AP5000AC_GPIO_LED_WLAN5G, true);
+
+	ath79_gpio_output_select(AP5000AC_GPIO_LED_STATUS, 0);
+	ath79_gpio_output_select(AP5000AC_GPIO_LED_STATUS1, 0);
+	ath79_gpio_output_select(AP5000AC_GPIO_LED_WLAN2G, 0);
+	ath79_gpio_output_select(AP5000AC_GPIO_LED_WLAN5G, 0);
+
+	/* For J7-4 */
+	ath79_gpio_function_disable(AR934X_GPIO_FUNC_CLK_OBS4_EN);
+
+	ath79_register_gpio_keys_polled(-1, CF_EXXXN_KEYS_POLL_INTERVAL,
+					ARRAY_SIZE(ap5000ac_gpio_keys),
+					ap5000ac_gpio_keys);
+}
+
+static void __init ap5000ac_setup(void)
+{
+	u8 *mac = (u8 *) KSEG1ADDR(0x1f040000);
+
+	ap5000ac_common_setup(0x40000);
+
+	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap5000ac_leds_gpio),
+				 ap5000ac_leds_gpio);
+
+	mdiobus_register_board_info(cf_e385ac_mdio0_info,
+				    ARRAY_SIZE(cf_e385ac_mdio0_info));
+	ath79_register_mdio(0, 0x0);
+
+	ath79_setup_qca955x_eth_cfg(QCA955X_ETH_CFG_RGMII_EN);
+
+	/* QCA9558 GMAC0 is connected to RMGII interface */
+	ath79_eth0_data.phy_if_mode = PHY_INTERFACE_MODE_RGMII;
+	ath79_eth0_data.phy_mask = BIT(0);
+	ath79_eth0_data.mii_bus_dev = &ath79_mdio0_device.dev;
+	ath79_eth0_pll_data.pll_1000 = 0x96000000;
+
+	ath79_init_mac(ath79_eth0_data.mac_addr, mac, 0);
+	ath79_register_eth(0);
+
+	/* QCA9558 GMAC1 is connected to SGMII interface */
+	ath79_eth1_data.phy_if_mode = PHY_INTERFACE_MODE_SGMII;
+	ath79_eth1_data.speed = SPEED_1000;
+	ath79_eth1_data.duplex = DUPLEX_FULL;
+	ath79_eth1_pll_data.pll_1000 = 0x03000101;
+
+	ath79_init_mac(ath79_eth1_data.mac_addr, mac, 1);
+	ath79_register_eth(1);
+}
+
+MIPS_MACHINE(ATH79_MACH_AP5000AC, "AP5000AC", "NPOTELECOM AP5000AC",
+	     ap5000ac_setup);
+
+
+
+
+
+
 
 static void __init cf_e5x0n_gpio_setup(void)
 {

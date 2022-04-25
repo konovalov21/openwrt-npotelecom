@@ -164,6 +164,9 @@ get_status_led() {
 	cf-e385ac)
 		status_led="$board:blue:wlan2g"
 		;;
+	ap5000ac)
+		status_led="$board:red:status"		
+		;;
 	cpe510)
 		status_led="tp-link:green:link4"
 		;;

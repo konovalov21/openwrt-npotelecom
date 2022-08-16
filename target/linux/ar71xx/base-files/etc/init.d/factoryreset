@@ -1,0 +1,27 @@
+#!/bin/sh /etc/rc.common
+
+
+START=90
+
+start(){
+D=$(fw_printenv bootargs)
+Etalon='bootargs=factoryreset'
+if [[ $D == $Etalon ]]; then
+
+echo "factory reset true"
+
+mtd -r erase rootfs_data
+
+sleep 120
+
+else
+
+echo "factory reset false"
+
+fi
+
+}
+
+
+
+

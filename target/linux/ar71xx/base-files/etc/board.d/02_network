@@ -587,7 +587,7 @@ ar71xx_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"0@eth1" "2:lan:1" "3:lan:2" "4:lan:3" "5:lan:4" "1:wan"
 		;;
-	ap5000ac)
+  	ap5000ac)
 		ucidef_set_interfaces_lan_wan "eth1.1" "eth1.2"
 		ucidef_add_switch "switch0" \
 			"6@eth1" "1:lan" "2:wan"
@@ -612,7 +612,7 @@ ar71xx_setup_macs()
 	archer-c7-v5)
 		base_mac=$(mtd_get_mac_binary info 8)
 		wan_mac=$(macaddr_add "$base_mac" 1)
-		;;
+		;;	
 	dgl-5500-a1|\
 	dir-825-c1)
 		wan_mac=$(mtd_get_mac_ascii nvram "wan_mac")

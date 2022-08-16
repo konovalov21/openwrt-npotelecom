@@ -823,7 +823,7 @@ static void __init ap5000ac_setup(void)
 	ath79_eth1_data.duplex = DUPLEX_FULL;
 	ath79_eth1_pll_data.pll_1000 = 0x03000101;
 
-	ath79_init_mac(ath79_eth1_data.mac_addr, mac, 1);
+	ath79_init_mac(ath79_eth1_data.mac_addr, mac + 6, 0);
 	ath79_register_eth(1);
 }
 

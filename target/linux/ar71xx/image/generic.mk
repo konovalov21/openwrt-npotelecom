@@ -111,7 +111,7 @@ define Device/ap5000ac
 	-uboot-envtools
   BOARDNAME := AP5000AC
   IMAGE_SIZE := 16000k
-  MTDPARTS := spi0.0:256k(u-boot)ro,64k(art)ro,16000k(firmware),64k(art-backup)ro
+  MTDPARTS := spi0.0:192k(u-boot)ro,64k(u-boot-env),64k(art)ro,16000k(firmware),64k(art-backup)ro
 endef
 TARGET_DEVICES += ap5000ac
 

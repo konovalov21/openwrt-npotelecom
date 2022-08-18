@@ -793,6 +793,50 @@ static void __init ap5000ac_common_setup(unsigned long art_ofs)
 					ap5000ac_gpio_keys);
 }
 
+
+/* QCA8337 GMAC0 is connected with QCA9558 over SGMII */
+static struct ar8327_pad_cfg ap5000ac_qca8337_pad0_cfg = {
+	.mode = AR8327_PAD_MAC_SGMII,
+	.sgmii_delay_en = true,
+	.rxclk_delay_sel = AR8327_CLK_DELAY_SEL0,
+};
+
+/* QCA8337 GMAC6 is connected with QCA9558 over RGMII */
+static struct ar8327_pad_cfg ap5000ac_qca8337_pad6_cfg = {
+	.mode = AR8327_PAD_MAC_RGMII,
+	.txclk_delay_en = true,
+	.rxclk_delay_en = true,
+	.txclk_delay_sel = AR8327_CLK_DELAY_SEL1,
+	.rxclk_delay_sel = AR8327_CLK_DELAY_SEL1,
+};
+
+static struct ar8327_platform_data ap5000ac_qca8337_data = {
+	.pad0_cfg = &ap5000ac_qca8337_pad0_cfg,
+	.pad6_cfg = &ap5000ac_qca8337_pad6_cfg,
+	.port0_cfg = {
+		.force_link = 1,
+		.speed = AR8327_PORT_SPEED_1000,
+		.duplex = 1,
+		.txpause = 1,
+		.rxpause = 1,
+	},
+	.port6_cfg = {
+		.force_link = 1,
+		.speed = AR8327_PORT_SPEED_1000,
+		.duplex = 1,
+		.txpause = 1,
+		.rxpause = 1,
+	},
+};
+
+static struct mdio_board_info ap5000ac_mdio0_info[] = {
+	{
+		.bus_id = "ag71xx-mdio.0",
+		.mdio_addr = 0,
+		.platform_data = &ap5000ac_qca8337_data,
+	},
+};
+
 static void __init ap5000ac_setup(void)
 {
 	u8 *mac = (u8 *) KSEG1ADDR(0x1f040000);
@@ -802,20 +846,20 @@ static void __init ap5000ac_setup(void)
 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap5000ac_leds_gpio),
 				 ap5000ac_leds_gpio);
 
-	mdiobus_register_board_info(cf_e385ac_mdio0_info,
-				    ARRAY_SIZE(cf_e385ac_mdio0_info));
+	mdiobus_register_board_info(ap5000ac_mdio0_info,
+				    ARRAY_SIZE(ap5000ac_mdio0_info));
 	ath79_register_mdio(0, 0x0);
 
-	ath79_setup_qca955x_eth_cfg(QCA955X_ETH_CFG_RGMII_EN);
+	ath79_setup_qca955x_eth_cfg(QCA955X_ETH_CFG_RGMII_EN);	
 
 	/* QCA9558 GMAC0 is connected to RMGII interface */
-	ath79_eth0_data.phy_if_mode = PHY_INTERFACE_MODE_RGMII;
-	ath79_eth0_data.phy_mask = BIT(0);
-	ath79_eth0_data.mii_bus_dev = &ath79_mdio0_device.dev;
-	ath79_eth0_pll_data.pll_1000 = 0x96000000;
+	//ath79_eth0_data.phy_if_mode = PHY_INTERFACE_MODE_RGMII;
+	//ath79_eth0_data.phy_mask = BIT(0);
+	//ath79_eth0_data.mii_bus_dev = &ath79_mdio0_device.dev;
+	//ath79_eth0_pll_data.pll_1000 = 0xa6000000;
 
-	ath79_init_mac(ath79_eth0_data.mac_addr, mac, 0);
-	ath79_register_eth(0);
+	//ath79_init_mac(ath79_eth0_data.mac_addr, mac, 0);
+	//ath79_register_eth(0);
 
 	/* QCA9558 GMAC1 is connected to SGMII interface */
 	ath79_eth1_data.phy_if_mode = PHY_INTERFACE_MODE_SGMII;

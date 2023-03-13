@@ -34,7 +34,8 @@ ramips_setup_interfaces()
 		;;
 	asiarf,ap7621-001|\
 	humax,e10|\
-	winstars,ws-wn583a6)
+	winstars,ws-wn583a6|\
+	npotelecom,ap5000ax)
 		ucidef_set_interfaces_lan_wan "lan" "wan"
 		;;
 	asiarf,ap7621-nv1|\

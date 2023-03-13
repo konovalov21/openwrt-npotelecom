@@ -1384,6 +1384,17 @@ define Device/netis_wf2881
 endef
 TARGET_DEVICES += netis_wf2881
 
+define Device/npotelecom_ap5000ax
+  $(Device/dsa-migration)
+  $(Device/uimage-lzma-loader)
+  IMAGE_SIZE := 16064k
+  UIMAGE_NAME := C8343R-9999
+  DEVICE_VENDOR := NPOTELECOM
+  DEVICE_MODEL := AP5000AX
+  DEVICE_PACKAGES := kmod-mt7915e
+endef
+TARGET_DEVICES += npotelecom_ap5000ax
+
 define Device/oraybox_x3a
   $(Device/dsa-migration)
   $(Device/uimage-lzma-loader)

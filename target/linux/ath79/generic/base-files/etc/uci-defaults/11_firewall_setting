@@ -1,0 +1,11 @@
+. /lib/functions.sh
+
+case "$(board_name)" in	
+	npotelecom,cpe-wifi-2g|\
+    npotelecom,cpe-wifi-5g)
+		uci set firewall.@zone[1].input="ACCEPT"        
+        uci commit firewall
+		;;
+esac
+
+exit 0

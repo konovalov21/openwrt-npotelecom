@@ -805,3 +805,21 @@ define Device/tplink_wbs510-v2
   TPLINK_BOARD_ID := WBS510V2
 endef
 TARGET_DEVICES += tplink_wbs510-v2
+
+define Device/npotelecom_cpe-wifi-5g
+  $(Device/tplink-16mlzma)
+  SOC := ar9344
+  DEVICE_VENDOR := NPO Telecom
+  DEVICE_MODEL := CPE-WIFI-5G   
+  TPLINK_HWID := 0xC0001050
+endef
+TARGET_DEVICES += npotelecom_cpe-wifi-5g
+
+define Device/npotelecom_cpe-wifi-2g
+  $(Device/tplink-16mlzma)
+  SOC := ar9344
+  DEVICE_VENDOR := NPO Telecom
+  DEVICE_MODEL := CPE-WIFI-2G   
+  TPLINK_HWID := 0xC0001020
+endef
+TARGET_DEVICES += npotelecom_cpe-wifi-2g

@@ -98,7 +98,9 @@ case "$FIRMWARE" in
 	tplink,tl-wdr4310-v1|\
 	tplink,tl-wdr4900-v2|\
 	ubnt,unifi-ap-pro|\
-	winchannel,wb2000)
+	winchannel,wb2000|\
+	npotelecom,cpe-wifi-5g|\
+	npotelecom,cpe-wifi-2g)
 		caldata_extract "art" 0x5000 0x440
 		;;
 	enterasys,ws-ap3705i)

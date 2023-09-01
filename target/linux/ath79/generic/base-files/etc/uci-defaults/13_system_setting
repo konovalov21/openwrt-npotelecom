@@ -1,0 +1,14 @@
+. /lib/functions.sh
+
+case "$(board_name)" in	
+    npotelecom,cpe-wifi-5g)
+	 uci set system.@system[0].hostname='CPE-WIFI-5G'
+         uci commit system
+		;;
+    npotelecom,cpe-wifi-2g)
+	uci set system.@system[0].hostname='CPE-WIFI-2G'
+	uci commit system
+		;;
+esac
+
+exit 0

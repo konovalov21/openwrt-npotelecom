@@ -1,0 +1,13 @@
+. /lib/functions.sh
+
+case "$(board_name)" in	
+    npotelecom,cpe-wifi-2g|\
+    npotelecom,cpe-wifi-5g)
+    		uci add_list network.@device[0].ports='wlan0'
+		uci set network.lan.ipaddr="192.168.1.1" 
+		uci set network.lan.device="br-lan"        
+        	uci commit network
+		;;
+esac
+
+exit 0

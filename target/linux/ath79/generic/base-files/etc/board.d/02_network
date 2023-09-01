@@ -99,8 +99,7 @@ ath79_setup_interfaces()
 		;;
 	npotelecom,cpe-wifi-5g|\
 	npotelecom,cpe-wifi-2g)
-		ucidef_set_interface_wan "eth0"
-		ucidef_set_interface_lan "wlan0"
+		ucidef_set_interface_lan "eth0"
 		;;
 	airtight,c-75)
 		ucidef_add_switch "switch0" \

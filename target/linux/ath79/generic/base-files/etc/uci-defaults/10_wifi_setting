@@ -1,10 +1,10 @@
 . /lib/functions.sh
 
 case "$(board_name)" in	
-	npotelecom,cpe-wifi-2g)
-		uci set wireless.@wifi-device[0].disabled="0"
+    npotelecom,cpe-wifi-2g)
+	uci set wireless.@wifi-device[0].disabled="0"
         uci set wireless.@wifi-iface[0].disabled="0"
-        uci set wireless.@wifi-iface[0].ssid="npotelecom-wifi"
+        uci set wireless.@wifi-iface[0].ssid="npotelecom-wifi-2g"
         uci set wireless.@wifi-iface[0].key="password"
         uci set wireless.@wifi-iface[0].encryption="psk2"
         uci set wireless.@wifi-device[0].country="RU"
@@ -14,7 +14,7 @@ case "$(board_name)" in
     npotelecom,cpe-wifi-5g)
 		uci set wireless.@wifi-device[0].disabled="0"
         uci set wireless.@wifi-iface[0].disabled="0"
-        uci set wireless.@wifi-iface[0].ssid="npotelecom-wifi"
+        uci set wireless.@wifi-iface[0].ssid="npotelecom-wifi-5g"
         uci set wireless.@wifi-iface[0].key="password"
         uci set wireless.@wifi-iface[0].encryption="psk2"
         uci set wireless.@wifi-device[0].country="RU"
